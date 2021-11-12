@@ -10,7 +10,7 @@ class Modulo(
 ) {
     var arrayAlumnos = arrayOfNulls<Alumno>(maxAlumnos)
     var arrayAlumnosOrdenados = arrayOfNulls<Alumno>(maxAlumnos)
-    var arrayNotas = Array(4) { arrayOfNulls<Float>(maxAlumnos) }
+    var arrayNotas = Array(4) { arrayOfNulls<String>(maxAlumnos) }
     var almacenIndex: Int = 0
 
     fun matricularAlumno(alumno: Alumno): Boolean {
@@ -41,42 +41,8 @@ class Modulo(
 
     }
 
-    // SOLO PARA TESTING
-    fun imprimirListaAlumnos() {
-        arrayAlumnosOrdenados = arrayAlumnos
-        arrayAlumnosOrdenados.sortWith(nullsLast(compareBy { it.id }))
-
-        println("--------------------------------")
-        println("LISTA ALUMNOS")
-        println("--------------------------------")
-        arrayAlumnosOrdenados.forEach { println("${it?.nombre} ${it?.ap1} || Identificador: ${it?.id}") }
-        println("--------------------------------")
-        println("")
-    }
-
 }
 
 fun main() {
-    var AlumnoA = Alumno("Pata", "Carglas", "Lunas", "3")
-    var AlumnoB = Alumno("Peta", "Carglas", "Lunas", "1")
-    var AlumnoC = Alumno("Pita", "Carglas", "Lunas", "2")
-    var AlumnoD = Alumno("Pota", "Carglas", "Lunas", "4")
-    var AlumnoE = Alumno("Maria", "Carglas", "Lunas", "5")
-    var AlumnoF = Alumno("Puta", "Carglas", "Lunas", "6")
 
-    var moduloProgramacion = Modulo(5)
-
-    moduloProgramacion.matricularAlumno(AlumnoA)
-    moduloProgramacion.matricularAlumno(AlumnoB)
-    moduloProgramacion.matricularAlumno(AlumnoC)
-    moduloProgramacion.matricularAlumno(AlumnoD)
-    moduloProgramacion.matricularAlumno(AlumnoE)
-    moduloProgramacion.matricularAlumno(AlumnoF)
-
-    moduloProgramacion.imprimirListaAlumnos()
-
-    moduloProgramacion.bajaAlumno("2")
-    moduloProgramacion.bajaAlumno("4")
-
-    moduloProgramacion.imprimirListaAlumnos()
 }
