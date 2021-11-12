@@ -1,57 +1,55 @@
 data class Alumno(
-    var nombreAlumno: String,
-    var apellido1Alumno: String,
-    var apellido2Alumno: String,
-    var identificadorInstituto: String
+    var nombre: String,
+    var ap1: String,
+    var ap2: String,
+    var id: String
 )
 
 class Modulo(
-    var numeroAlumnos: Int
+    var maxAlumnos: Int
 ) {
-    var arrayAlumnos = arrayOfNulls<Alumno>(numeroAlumnos)
-    var arrayAlumnosOrdenados = arrayOfNulls<Alumno>(numeroAlumnos)
-    var arrayNotas = Array(4) { arrayOfNulls<Float>(numeroAlumnos) }
+    var arrayAlumnos = arrayOfNulls<Alumno>(maxAlumnos)
+    var arrayAlumnosOrdenados = arrayOfNulls<Alumno>(maxAlumnos)
+    var arrayNotas = Array(4) { arrayOfNulls<Float>(maxAlumnos) }
+    var almacenIndex: Int = 0
 
-    fun anadirAlumno(alumnoAnadido: Alumno) {
-        // Añade alumno en una posicion vacia dentro del array "arrayAlumno"
-        // TODO Revisar indexOfFirst para quitar try-catch
-        try {
-            arrayAlumnos[arrayAlumnos.indexOfFirst { it == null }] = alumnoAnadido
-        } catch (_: ArrayIndexOutOfBoundsException) {
-            println("Es imposible a este alumno")
+    fun matricularAlumno(alumno: Alumno): Boolean {
+        when (arrayAlumnos.indexOfFirst { it == null }) {
+            in 0..maxAlumnos - 1 -> almacenIndex = arrayAlumnos.indexOfFirst { it == null }
+            !in 0..maxAlumnos - 1 -> almacenIndex = -1
+        }
+        return if (almacenIndex.equals(-1)) {
+            false
+        } else {
+            arrayAlumnos[almacenIndex] = alumno
+            true
         }
 
     }
 
-    fun eliminarAlumno(alumnoEliminado: Alumno) {
-        // TODO Revisar indexOfFirst para quitar try-catch
-        try {
-            arrayAlumnos[arrayAlumnos.indexOfFirst { it == alumnoEliminado }] = null
-        } catch (_: ArrayIndexOutOfBoundsException) {
-            println("No se ha encontrado el alumno")
+    fun bajaAlumno(idAlumno: String): Boolean {
+        when (arrayAlumnos.indexOfFirst { it?.id == idAlumno }) {
+            in 0..maxAlumnos - 1 -> almacenIndex = arrayAlumnos.indexOfFirst { it?.id == idAlumno }
+            !in 0..maxAlumnos - 1 -> almacenIndex = -1
+        }
+        return if (almacenIndex.equals(-1)) {
+            false
+        } else {
+            arrayAlumnos[almacenIndex] = null
+            true
         }
 
     }
 
     // SOLO PARA TESTING
-    fun imprimirListaAlumnos(){
+    fun imprimirListaAlumnos() {
         arrayAlumnosOrdenados = arrayAlumnos
-        arrayAlumnosOrdenados.sortWith(nullsLast(compareBy {it.identificadorInstituto}))
+        arrayAlumnosOrdenados.sortWith(nullsLast(compareBy { it.id }))
 
         println("--------------------------------")
         println("LISTA ALUMNOS")
         println("--------------------------------")
-        arrayAlumnosOrdenados.forEach { println("${it?.nombreAlumno} ${it?.apellido1Alumno} || Identificador: ${it?.identificadorInstituto}") }
-        println("--------------------------------")
-        println("")
-    }
-
-    // SOLO PARA TESTING
-    fun imprimirListaNotas(){
-        println("--------------------------------")
-        println("LISTA NOTAS ALUMNOS")
-        println("--------------------------------")
-        arrayNotas.forEach { println("${it[0]}, ${it[1]}, ${it[2]}, ${it[3]}") }
+        arrayAlumnosOrdenados.forEach { println("${it?.nombre} ${it?.ap1} || Identificador: ${it?.id}") }
         println("--------------------------------")
         println("")
     }
@@ -68,19 +66,17 @@ fun main() {
 
     var moduloProgramacion = Modulo(5)
 
-    moduloProgramacion.anadirAlumno(AlumnoA)
-    moduloProgramacion.anadirAlumno(AlumnoB)
-    moduloProgramacion.anadirAlumno(AlumnoC)
-    moduloProgramacion.anadirAlumno(AlumnoD)
-    moduloProgramacion.anadirAlumno(AlumnoE)
-    moduloProgramacion.anadirAlumno(AlumnoF)
+    moduloProgramacion.matricularAlumno(AlumnoA)
+    moduloProgramacion.matricularAlumno(AlumnoB)
+    moduloProgramacion.matricularAlumno(AlumnoC)
+    moduloProgramacion.matricularAlumno(AlumnoD)
+    moduloProgramacion.matricularAlumno(AlumnoE)
+    moduloProgramacion.matricularAlumno(AlumnoF)
 
     moduloProgramacion.imprimirListaAlumnos()
 
-    moduloProgramacion.eliminarAlumno(AlumnoC)
-    moduloProgramacion.eliminarAlumno(AlumnoF)
+    moduloProgramacion.bajaAlumno("2")
+    moduloProgramacion.bajaAlumno("4")
 
     moduloProgramacion.imprimirListaAlumnos()
-
-    moduloProgramacion.imprimirListaNotas()
 }
